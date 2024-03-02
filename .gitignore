@@ -1,0 +1,23 @@
+# Dependency directories
+node_modules/
+dist/
+
+# Environment variables file
+.env
+
+# IDE and editor files
+.vscode/
+.idea/
+
+# Log files
+logs/
+
+# Compiled JavaScript files (if not using .gitkeep in dist/ directory)
+*.js
+
+
+# macOS system files
+.DS_Store
+
+# TypeScript build artifacts
+*.tsbuildinfo
