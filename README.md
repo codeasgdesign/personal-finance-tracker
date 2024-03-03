@@ -20,7 +20,7 @@ Managing personal finances can be challenging, but with the Personal Finance Tra
 3. Navigate to the project directory in your terminal.
 4. Run `npm install` to install dependencies.
 5. Set up a MongoDB database and provide the connection URI in the `.env` file.
-6. Run `npm start` to start the server.
+6. Run `npm run dev` to start the server.
 
 ## Endpoints
 
@@ -65,7 +65,7 @@ Please refer to the [API Documentation](https://documenter.getpostman.com/view/7
 - JEST for testing
 
 ## DB design
-![Personal Finance Tracker](https://pasteboard.co/ki5BSoTTrtBr.png)
+![Personal Finance Tracker](/images/DB%20.png)
 
 
 ## Contributors

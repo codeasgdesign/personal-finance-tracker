@@ -8,7 +8,7 @@ export async function authenticate(req: FastifyRequest, res: FastifyReply) {
       res.status(401);
       throw new Error('Unauthorized');
     }
-    const decodedToken = jwt.verify(token, 'secret') as { userId: string }; 
+    const decodedToken = jwt.verify(token, process.env.JWT_SECRET as string) as { userId: string }; 
     req.headers['user'] = decodedToken as unknown as any;
   } catch (err) {
     req.log.error(err);

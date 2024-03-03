@@ -5,13 +5,16 @@ import categoryRoutes from './routes/categoryRoutes';
 import transactionRoutes from './routes/transactionRoutes';
 import financialRoutes from './routes/financialRoutes';
 import fastifyRateLimit from '@fastify/rate-limit';
+import dotenv from 'dotenv';
+
 
 const app = Fastify({ logger: true }) 
+dotenv.config();
 
 
 async function main() {
   await app.listen({
-    port: 3000,
+    port: process.env.PORT as unknown as number,
     host: '0.0.0.0',
   })
 }
@@ -25,9 +28,5 @@ app.register(categoryRoutes)
 app.register(transactionRoutes);
 app.register(financialRoutes)
 connectToMongoDB()
-
-app.get('/healthcheck', (_req, res) => {
-    res.send({ message: 'Success' })
-})
 main()
-export  default app;
+export default app;

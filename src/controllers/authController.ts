@@ -17,7 +17,7 @@ export async function registerUser(req: FastifyRequest, res: FastifyReply) {
 
    const newUser= await createUser(username,email,password);
 
-    const token = jwt.sign({ userId: newUser._id }, 'secret', { expiresIn: '1h' });
+    const token = jwt.sign({ userId: newUser._id }, process.env.JWT_SECRET as string, { expiresIn: '1h' });
 
     res.send({ message: 'User registered successfully', token });
   } catch (err) {
@@ -40,7 +40,7 @@ export async function loginUser(req: FastifyRequest, res: FastifyReply) {
     if (!validPassword) {
       return res.status(401).send({ error: 'Invalid password' });
     }
-    const token = jwt.sign({ userId: user._id }, 'secret', { expiresIn: '1h' });
+    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET as string, { expiresIn: '1h' });
     res.send({ token });
   } catch (err) {
     req.log.error(err);
