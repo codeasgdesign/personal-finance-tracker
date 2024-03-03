@@ -70,5 +70,4 @@ Please refer to the [API Documentation](https://documenter.getpostman.com/view/7
 
 ## Contributors
 
-- [Ashish Guleria](https://github.com/codeashish) - Lead Developer
-
+- [Ashish Guleria](https://github.com/codeashish) - Developer
