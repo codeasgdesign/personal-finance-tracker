@@ -114,10 +114,8 @@ export async function deleteTransaction(
 ) {
   try {
     const { id } = req.params as { id: string };
-    console.log("hello")
     const deletedTransaction: ITransaction | null =
       await Transaction.findByIdAndDelete(id);
-      console.log("hello")
 
     if (!deletedTransaction) {
       return res.status(404).send({ error: "Transaction not found" });

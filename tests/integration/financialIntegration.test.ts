@@ -23,7 +23,7 @@ describe('Financial Summary Route Integration Tests', () => {
         });
         const { token: authToken } = JSON.parse(response.body);
         token = authToken;
-        const decodeToken = jwt.verify(token, 'secret') as { userId: string };
+        const decodeToken = jwt.verify(token, 'mysecretkey') as { userId: string };
          userId = decodeToken.userId;
         const category = await Category.create({ name: 'Test Category', user: userId });
         categoryId = category._id;

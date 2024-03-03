@@ -1,6 +1,6 @@
 
 import bcrypt from 'bcrypt';
-import { User, UserDocument } from './../models/User';
+import { User, UserDocument } from '../models/User';
 
 export async function createUser(username: string, email: string, password: string):Promise<UserDocument> {
   try {

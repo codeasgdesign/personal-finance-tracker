@@ -1,7 +1,7 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { createUser, findUserByEmail, findUserByEmailOrUserName } from '../repository/user.repository';
+import { createUser, findUserByEmail, findUserByEmailOrUserName } from '../utils/userUtils';
 
 export async function registerUser(req: FastifyRequest, res: FastifyReply) {
   try {
