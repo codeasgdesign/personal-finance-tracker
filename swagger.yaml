@@ -1,0 +1,329 @@
+openapi: 3.0.0
+info:
+  title: Personal Finance Tracker API
+  version: 1.0.0
+  description: API for user registration and login in the Personal Finance Tracker application
+servers:
+  - url: http://localhost:3000
+paths:
+  /api/users/register:
+    post:
+      summary: Register a new user
+      tags: [user]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterUserRequest'
+      responses:
+        '200':
+          description: User registered successfully
+        '400':
+          description: Invalid request body
+        '500':
+          description: Internal Server Error
+  /api/users/login:
+    post:
+      summary: Authenticate user and return JWT
+      tags: [user]
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginUserRequest'
+      responses:
+        '200':
+          description: User authenticated successfully
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal Server Error
+  /api/categories:
+    post:
+      summary: Add a new category
+      tags: [category]
+      description: Add a new category with the specified details
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateCategoryRequest'
+      responses:
+        '201':
+          description: Category created successfully
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal Server Error
+    get:
+      summary: List all categories
+      tags: [category]
+      description: Retrieve a list of all categories
+      responses:
+        '200':
+          description: List of categories
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal Server Error
+  /api/categories/{id}:
+    put:
+      summary: Update a specific category
+      tags: [category]
+      description: Update the details of a specific category
+      parameters:
+        - in: path
+          name: id
+          description: ID of the category to update
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateCategoryRequest'
+      responses:
+        '200':
+          description: Category updated successfully
+        '401':
+          description: Unauthorized
+        '404':
+          description: Category not found
+        '500':
+          description: Internal Server Error
+    delete:
+      summary: Delete a specific category
+      tags: [category]
+      description: Delete a specific category by its ID
+      parameters:
+        - in: path
+          name: id
+          description: ID of the category to delete
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Category deleted successfully
+        '401':
+          description: Unauthorized
+        '404':
+          description: Category not found
+        '500':
+          description: Internal Server Error
+  /api/summary:
+    post:
+      summary: Get financial summary
+      tags: [Financial]
+      description: Retrieve financial summary for a specific time period
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SummaryRequestSchema'
+      responses:
+        '200':
+          description: Financial summary retrieved successfully
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal Server Error
+  /api/getMonthlyExpenseTrends:
+    post:
+      summary: Get monthly expense trends
+      tags: [Financial]
+      description: Retrieve monthly expense trends for a specific time period
+      responses:
+        '200':
+          description: Monthly expense trends retrieved successfully
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal Server Error     
+  /api/transactions:
+    post:
+      summary: Add a new transaction
+      tags: [Transaction]
+      description: Add a new income/expense record
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TransactionRequest'
+      responses:
+        '201':
+          description: Transaction created successfully
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal Server Error
+    get:
+      summary: Get transactions
+      tags: [Transaction]
+      description: Fetch all transactions for the logged-in user
+      responses:
+        '200':
+          description: Transactions fetched successfully
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal Server Error
+  /api/transactions/{id}:
+    put:
+      summary: Update a transaction
+      tags: [Transaction]
+      description: Update a specific transaction
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID of the transaction to update
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateTransactionRequest'
+      responses:
+        '200':
+          description: Transaction updated successfully
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal Server Error
+    delete:
+      summary: Delete a transaction
+      tags: [Transaction]
+      description: Delete a specific transaction
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID of the transaction to delete
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Transaction deleted successfully
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal Server Error               
+components:
+  schemas:
+    CreateCategoryRequest:
+      type: object
+      properties:
+        name:
+          type: string
+      required:
+        - name
+    UpdateCategoryRequest:
+      type: object
+      properties:
+        name:
+          type: string
+      required:
+        - name
+    DeleteCategoryRequest:
+      type: object
+      properties:
+        id:
+          type: string
+      required:
+        - id
+    RegisterUserRequest:
+      type: object
+      properties:
+        username:
+          type: string
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+      required:
+        - username
+        - email
+        - password
+    LoginUserRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+      required:
+        - email
+        - password
+    SummaryRequestSchema:
+      type: object
+      properties:
+        startDate:
+          type: string
+          format: date
+        endDate:
+          type: string
+          format: date
+      required:
+        - startDate
+        - endDate
+    MonthlyExpenseTrends:
+      type: object
+      properties:
+        startDate:
+          type: string
+          format: date
+        endDate:
+          type: string
+          format: date
+      required:
+        - startDate
+        - endDate   
+    TransactionRequest:
+      type: object
+      properties:
+        amount:
+          type: number
+        date:
+          type: string
+          format: date
+        category:
+          type: string
+        type:
+          type: string
+          enum: [income, expense]
+        description:
+          type: string
+      required:
+        - amount
+        - date
+        - category
+        - type
+    UpdateTransactionRequest:
+      type: object
+      properties:
+        amount:
+          type: number
+        date:
+          type: string
+          format: date
+        category:
+          type: string
+        description:
+          type: string
+      required:
+        - amount
+        - date
+        - category           
