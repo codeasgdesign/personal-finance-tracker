@@ -23,7 +23,7 @@
 /// <reference types="mongoose/types/virtuals" />
 /// <reference types="mongoose/types/inferschematype" />
 import mongoose, { Document } from 'mongoose';
-interface UserDocument extends Document {
+export interface UserDocument extends Document {
     username: string;
     email: string;
     password: string;
@@ -31,4 +31,3 @@ interface UserDocument extends Document {
 export declare const User: mongoose.Model<UserDocument, {}, {}, {}, mongoose.Document<unknown, {}, UserDocument> & UserDocument & {
     _id: mongoose.Types.ObjectId;
 }, any>;
-export {};

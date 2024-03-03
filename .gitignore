@@ -1,6 +1,6 @@
 # Dependency directories
 node_modules/
-dist/
+build/
 
 # Environment variables file
 .env
@@ -21,3 +21,7 @@ logs/
 
 # TypeScript build artifacts
 *.tsbuildinfo
+
+#test coverage
+
+coverage/

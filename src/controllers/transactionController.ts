@@ -1,6 +1,7 @@
 import { FastifyRequest, FastifyReply } from "fastify";
 import { ITransaction, Transaction } from "../models/Transaction";
 import { Category } from "../models/Category";
+import mongoose from "mongoose";
 
 export async function createTransaction(
   req: FastifyRequest,
@@ -93,7 +94,7 @@ export async function updateTransaction(
     const updatedTransaction: ITransaction | null =
       await Transaction.findByIdAndUpdate(id, updates, { new: true })
         .populate("category", "name")
-        .select("amount date category type description");
+        .select("amount date category type description") as unknown as ITransaction;
 
     if (!updatedTransaction) {
       return res.status(404).send({ error: "Transaction not found" });
@@ -113,19 +114,20 @@ export async function deleteTransaction(
 ) {
   try {
     const { id } = req.params as { id: string };
-
-    // Find the transaction by ID and delete it
+    console.log("hello")
     const deletedTransaction: ITransaction | null =
       await Transaction.findByIdAndDelete(id);
+      console.log("hello")
 
-    // Check if the transaction exists
     if (!deletedTransaction) {
       return res.status(404).send({ error: "Transaction not found" });
     }
 
-    // Respond with success message
     res.send({ message: "Transaction deleted successfully" });
   } catch (error) {
+    if (error instanceof mongoose.Error.CastError) {
+      return res.status(400).send({ error: "Invalid ID format" });
+    }
     console.error("Error deleting transaction:", error);
     res.status(500).send({ error: "Internal Server Error" });
   }

@@ -1,5 +1,6 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import { ITransaction, Transaction } from "../models/Transaction";
+import mongoose from 'mongoose';
 
 export async function getSummary(req: FastifyRequest, res: FastifyReply) {
   try {
@@ -19,6 +20,45 @@ export async function getSummary(req: FastifyRequest, res: FastifyReply) {
     res.status(500).send({ error: 'Internal Server Error' });
   }
 }
+
+export async function getMonthlyExpenseTrends(req: FastifyRequest, res: FastifyReply) {
+  try {
+    const userId = (req.headers.user as unknown as { userId: string }).userId;
+    const year = ((req.query) as unknown as {year:string}).year ||2024;
+    const monthlyExpenses = await Transaction.aggregate([
+      {
+        $match: {
+          user: new mongoose.Types.ObjectId(userId),
+          type: 'expense',
+          date: {
+            $gte: new Date(`${year}-01-01T00:00:00Z`),
+            $lte: new Date(`${year}-12-31T23:59:59Z`)
+          }
+        }
+      },
+      {
+        $group: {
+          _id: { month: { $month: '$date' }},
+          totalExpense: { $sum: '$amount' }
+        }
+      },
+      {
+        $project: {
+          _id: 0,
+          month: '$_id.month',
+          category: '$_id.category',
+          totalExpense: 1
+        }
+      }
+    ]);
+    
+    res.send(monthlyExpenses);
+  } catch (error) {
+    console.error('Error fetching monthly expense trends:', error);
+    res.status(500).send({ error: 'Internal Server Error' });
+  }
+}
+
 
 async function calculateTotalAmountByType(transactions: ITransaction[], type: string): Promise<number> {
   return transactions

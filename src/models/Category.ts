@@ -6,10 +6,9 @@ interface ICategory extends Document {
   createdAt: Date;
   updatedAt: Date;
 }
-
 const categorySchema: Schema<ICategory> = new Schema({
   name: { type: String, required: true },
-  user: { type: mongoose.Types.ObjectId, ref: 'User', required: true }, 
-}, { timestamps: true }); 
+  user: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+}, { timestamps: true });
 
 export const Category = mongoose.model<ICategory>('Category', categorySchema);

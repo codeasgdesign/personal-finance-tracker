@@ -1,8 +1,8 @@
 
 import bcrypt from 'bcrypt';
-import { User } from './../models/User';
+import { User, UserDocument } from './../models/User';
 
-export async function createUser(username: string, email: string, password: string) {
+export async function createUser(username: string, email: string, password: string):Promise<UserDocument> {
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
     const newUser = new User({ username, email, password: hashedPassword });
@@ -13,7 +13,7 @@ export async function createUser(username: string, email: string, password: stri
   }
 }
 
-export async function findUserByEmailOrUserName({ email, username }: { email: string, username: string }) {
+export async function findUserByEmailOrUserName({ email, username }: { email: string, username: string }):Promise<UserDocument|null> {
   try {
     return await User.findOne({ $or: [{ email }, { username }] });
   } catch (err) {
@@ -21,7 +21,7 @@ export async function findUserByEmailOrUserName({ email, username }: { email: st
   }
 }
 
-export async function findUserByEmail(email: string) {
+export async function findUserByEmail(email: string):Promise<UserDocument|null> {
   try {
     return await User.findOne({ email });
   } catch (err) {
